@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 const { devEnv, testEnv, proEnv } = require("./config/config"); // 测试环境
-console.log(devEnv, testEnv, proEnv);
 const env = process.env.NODE_ENV;
+console.log(devEnv, testEnv, proEnv, env);
 let target = "";
 // 默认是本地环境
 switch (env) {
@@ -16,27 +16,9 @@ switch (env) {
     target = devEnv.hosturl;
     break;
 }
-module.exports = {
+const config = {
   publicPath: "/",
-  // lintOnSave: true, // 是否在开发环境下每次保存代码时都启用 eslint验证
-  devServer: {
-    open: true, // 开启自动打开浏览器
-    host: "127.0.0.1", // 地址
-    port: "8080", // 端口
-    disableHostCheck: true,
-    proxy: {
-      "/api": {
-        // 设置跨域变量代号
-        target: target, // 你想要代理的目标源链接
-        ws: true, // 开启websocket
-        changeOrigin: true, // 开启代理
-        pathRewrite: {
-          // 设置二级
-          "^/api": "/api"
-        }
-      }
-    }
-  },
+  lintOnSave: true, // 是否在开发环境下每次保存代码时都启用 eslint验证
   configureWebpack: {
     // 警告 webpack 的性能提示
     performance: {
@@ -62,3 +44,25 @@ module.exports = {
     }
   }
 };
+// 是否需要代理
+if (env === "development") {
+  config.devServer = {
+    open: true, // 开启自动打开浏览器
+    host: "127.0.0.1", // 地址
+    port: "8080", // 端口
+    disableHostCheck: true,
+    proxy: {
+      "/api": {
+        // 设置跨域变量代号
+        target: target, // 你想要代理的目标源链接
+        ws: true, // 开启websocket
+        changeOrigin: true, // 开启代理
+        pathRewrite: {
+          // 设置二级
+          "^/api": "/api"
+        }
+      }
+    }
+  };
+}
+module.exports = config;
