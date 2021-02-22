@@ -1,4 +1,4 @@
-# 3.0.ts
+# ts-demo
 
 ## Project setup
 ```
