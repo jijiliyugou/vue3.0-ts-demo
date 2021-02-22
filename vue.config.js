@@ -48,8 +48,6 @@ const config = {
 if (env === "development") {
   config.devServer = {
     open: true, // 开启自动打开浏览器
-    host: "127.0.0.1", // 地址
-    port: "8080", // 端口
     disableHostCheck: true,
     proxy: {
       "/api": {
